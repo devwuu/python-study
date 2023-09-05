@@ -3,6 +3,9 @@ from .models import Post
 
 
 # Create your views here.
+# FBV(Function Base View)
+
+
 def index(request):
     posts = Post.objects.all().order_by('-created_at')
     return render(
