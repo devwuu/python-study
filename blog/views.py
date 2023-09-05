@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.views.generic import ListView
+from django.views.generic import ListView, DetailView
 from .models import Post
 
 
@@ -10,3 +10,8 @@ class PostList(ListView):
     model = Post
     template_name = 'list.html'
     ordering = '-created_at'
+
+
+class PostDetail(DetailView):
+    model = Post
+    template_name = 'detail.html'
