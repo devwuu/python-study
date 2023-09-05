@@ -9,5 +9,6 @@ class Post(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)  # 월 일 시 분 초
     updated_at = models.DateTimeField(auto_now=True)  # 월 일 시 분 초
 
+    # toString
     def __str__(self):
         return f'[{self.pk}] {self.title}'
