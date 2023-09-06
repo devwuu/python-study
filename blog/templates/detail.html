@@ -78,8 +78,14 @@
                 {% endif %}
                 <hr>
 
+
                 <!-- Post Content -->
                 <p>{{ post.content }}</p>
+
+                {% if post.file %}
+                    <a class="btn btn-outline-dark" href="{{ post.file.url }}">Download {{ post.get_file_name }}</a>
+                {% endif %}
+
                 <hr>
 
                 <!-- Comments Form -->

@@ -1,4 +1,5 @@
 from django.db import models
+import os
 
 
 # Create your models here.
@@ -14,3 +15,6 @@ class Post(models.Model):
     # toString
     def __str__(self):
         return f'[{self.pk}] {self.title}'
+
+    def get_file_name(self):
+        return os.path.basename(self.file.name)
