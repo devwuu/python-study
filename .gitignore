@@ -12,3 +12,7 @@ venv/
 venv.bak/
 .idea
 .idea/
+
+#media
+_media
+_media/
