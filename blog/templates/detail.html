@@ -72,9 +72,10 @@
 
                 <hr>
 
-                <!-- Preview Image -->
-                <img class="img-fluid rounded" src="{{ post.thumbnail.url }}" alt="thumbnail">
-
+                {% if post.thumbnail %}
+                    <!-- Preview Image -->
+                    <img class="img-fluid rounded" src="{{ post.thumbnail.url }}" alt="thumbnail">
+                {% endif %}
                 <hr>
 
                 <!-- Post Content -->
