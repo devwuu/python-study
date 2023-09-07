@@ -8,6 +8,7 @@ class Post(models.Model):
     file = models.FileField(upload_to='blog/files/%Y/%m/%d/', blank=True)
     title = models.CharField(max_length=30)
     content = models.TextField()
+    hook_text = models.CharField(max_length=100, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)  # 월 일 시 분 초
     updated_at = models.DateTimeField(auto_now=True)  # 월 일 시 분 초
