@@ -84,7 +84,7 @@
 
 
                 <!-- Post Content -->
-                <p>{{ post.content }}</p>
+                <p id="post_content">{{ post.content }}</p>
 
                 {% if post.file %}
                     <a class="btn btn-outline-dark" href="{{ post.file.url }}">Download {{ post.get_file_name }}</a>
