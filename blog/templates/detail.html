@@ -1,18 +1,10 @@
-<!DOCTYPE html>
-{#{% extends 'common/footer.html' %}#}
-{% load static %}
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{ post.title }} - Blog</title>
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-</head>
-<body>
 
-    <!-- Navigation -->
-    {% include 'common/nav.html' %}
+{% extends 'common/base.html' %}
 
-    <!-- Page Content -->
+{% block title_container %} {{ post.title }} - Blog {% endblock %}
+
+<!-- Page Content -->
+{% block main_container %}
     <div class="container">
 
         <div class="row">
@@ -128,13 +120,5 @@
 
         </div>
         <!-- /.row -->
-
     </div>
-    <!-- /.container -->
-
-    <!-- Footer -->
-    {% include 'common/footer.html'%}
-
-
-</body>
-</html>
+{% endblock %}

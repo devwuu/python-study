@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title_container %}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+</head>
+<body>
+{% block main_header %}
+{% endblock %}
+
+{% include 'common/nav.html' %}
+
+<!-- Modal -->
+{% block modal_container %}
+{% endblock %}
+
+<!-- container -->
+{% block main_container %}
+{% endblock %}
+
+<!-- Footer -->
+{% include 'common/footer.html' %}
+
+
+</body>
+</html>
