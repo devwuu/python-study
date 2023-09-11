@@ -3,28 +3,15 @@
     <div class="card-body">
         <div class="row">
             <div class="col-lg-6">
-                <ul class="list-unstyled mb-0">
+                <ul class="list-unstyled mb-0" id="categorys">
+                    {% for c in categorys %}
                     <li>
-                        <a href="#">Web Design</a>
+                        <a href="#">{{ c.name }} ( {{ c.post_set.count }} )</a>
+                                            <!-- 역참조 문법 : *_set -->
                     </li>
+                    {% endfor %}
                     <li>
-                        <a href="#">HTML</a>
-                    </li>
-                    <li>
-                        <a href="#">Freebies</a>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-lg-6">
-                <ul class="list-unstyled mb-0">
-                    <li>
-                        <a href="#">JavaScript</a>
-                    </li>
-                    <li>
-                        <a href="#">CSS</a>
-                    </li>
-                    <li>
-                        <a href="#">Tutorials</a>
+                        <a href="#">None ( {{ no_category_post_count }} )</a>
                     </li>
                 </ul>
             </div>
