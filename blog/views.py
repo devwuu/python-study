@@ -24,6 +24,7 @@ class PostDetail(DetailView):
     model = Post
     # DetailView를 상속 받았기 때문에 .get(pk=)를 자동으로 실행해준다.
     template_name = 'detail.html'
+    # class name과 template name이 같으면 템플릿 네임 생략 가능
 
     def get_context_data(self, **kwargs):
         context = super(PostDetail, self).get_context_data()
@@ -31,3 +32,27 @@ class PostDetail(DetailView):
         context['no_category_post_count'] = Post.objects.filter(category=None).count()
         return context
 
+
+# FBV(Function Base View)
+def category_page(request, slug):
+
+    # get()은 단일, filter는 복수개
+
+    if slug == 'none':
+        category=None
+        post_list = Post.objects.filter(category=None)
+    else:
+        category = Category.objects.get(slug=slug)
+        post_list = Post.objects.filter(category=category)
+        # 변수 scope는 해당 함수 내부까지
+
+    return render(
+        request,
+        'list.html',
+        {
+            'post_list': post_list,
+            'categorys': Category.objects.all(),
+            'no_category_post_count': Post.objects.filter(category=None).count(),
+            'category': category
+        }
+    )

@@ -45,3 +45,10 @@ class TestView(TestCase):
         soup = BeautifulSoup(response.content, 'html.parser')
         find = soup.find('ul', id='categorys')
         self.assertIn(self.category_programming.name, find.text)
+
+    def test_category_page(self):
+        response = self.client.get(f'/blog/category/{self.category_programming.slug}/')
+        self.assertEqual(response.status_code, 200)
+        soup = BeautifulSoup(response.content, 'html.parser')
+        find = soup.find('span', id='category-name')
+        self.assertIn(self.category_programming.name, find.text)

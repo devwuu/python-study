@@ -1,7 +1,7 @@
 {% extends 'common/base.html' %}
 
 {% block title_container %} Blog {% endblock %}
-{% block main_header %} <h1> Blog </h1> {% endblock %}
+{% block main_header %} <h1> Blog {% if category %}<span class="badge badge-secondary" id="category-name">{{ category.name }}</span>{% endif %}</h1> {% endblock %}
 
 <!-- Modal -->
 {% block modal_container %}
