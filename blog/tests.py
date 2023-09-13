@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 from bs4 import BeautifulSoup
-from .models import Post, Category
+from .models import Post, Category, Tag
 from django.contrib.auth.models import User
 
 
@@ -12,12 +12,15 @@ class TestView(TestCase):
         self.user_ddochi = User.objects.create_user(username='ddochi', password='1234')
         self.category_programming = Category.objects.create(name='programming', slug='프로그래밍')
         self.category_music = Category.objects.create(name='music', slug='음악')
+        self.tag_c = Tag.objects.create(name='C', slug='C')
+        self.tag_python = Tag.objects.create(name='Python', slug='Python')
         self.post = Post.objects.create(
             title='given',
             content='given content',
             category=self.category_programming,
-            author=self.user_ddochi
+            author=self.user_ddochi,
         )
+        self.post.tags.add(self.tag_c, self.tag_python)
 
     def test_post_list(self):
         reponse = self.client.get('/blog/')

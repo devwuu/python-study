@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
-from .models import Post, Category
+from .models import Post, Category, Tag
 
 
 # Create your views here.
@@ -24,6 +24,7 @@ class PostDetail(DetailView):
     model = Post
     # DetailView를 상속 받았기 때문에 .get(pk=)를 자동으로 실행해준다.
     template_name = 'detail.html'
+
     # class name과 template name이 같으면 템플릿 네임 생략 가능
 
     def get_context_data(self, **kwargs):
@@ -35,11 +36,10 @@ class PostDetail(DetailView):
 
 # FBV(Function Base View)
 def category_page(request, slug):
-
     # get()은 단일, filter는 복수개
 
     if slug == 'none':
-        category=None
+        category = None
         post_list = Post.objects.filter(category=None)
     else:
         category = Category.objects.get(slug=slug)
@@ -54,5 +54,19 @@ def category_page(request, slug):
             'categorys': Category.objects.all(),
             'no_category_post_count': Post.objects.filter(category=None).count(),
             'category': category
+        }
+    )
+
+
+def tag_page(request, slug):
+    tag = Tag.objects.get(slug=slug)
+
+    return render(
+        request,
+        'list.html',
+        {
+            'post_list': tag.post_set.all(),  # Post.objects.filter(tags=tag),
+            'categorys': Category.objects.all(),
+            'no_category_post_count': Post.objects.filter(category=None).count(),
         }
     )

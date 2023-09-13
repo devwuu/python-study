@@ -12,6 +12,14 @@ class Category(models.Model):
         return self.name
 
 
+class Tag(models.Model):
+    name = models.CharField(max_length=50)
+    slug = models.SlugField(max_length=200, unique=True, allow_unicode=True)
+
+    def __str__(self):
+        return  self.name
+
+
 class Post(models.Model):
     thumbnail = models.ImageField(upload_to='blog/images/%Y/%m/%d/',
                                   blank=True)  # MEDIA_ROOT의 하위 폴더로 'blog/images/%Y/%m/%d/' 디렉토리를 생성하고 파일을 저장한다
@@ -23,6 +31,9 @@ class Post(models.Model):
     category = models.ForeignKey(Category, null=True, on_delete=models.SET_NULL, blank=True)
     # blank : 빈 값으로 저장 수정 허용
     # null : null 허용
+    tags = models.ManyToManyField(Tag, blank=True)
+    # 다대다 관계에서는 null=True 가 default
+    # 관계 테이블을 생성해줌
 
     created_at = models.DateTimeField(auto_now_add=True)  # 월 일 시 분 초
     updated_at = models.DateTimeField(auto_now=True)  # 월 일 시 분 초
