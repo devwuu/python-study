@@ -1,14 +1,11 @@
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView, CreateView
 from .models import Post, Category, Tag
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 # 현재 쿼리 최적화를 하지 않고 자동 발생하는 쿼리에 의존해서 데이터를 가져오다보니
 # 관계가 있는 모델의 경우 아이디별로 쿼리가 발생하는 현상이 발생
 # 실무에서 사용하기 위해선 최적화가 필요할 것 같다
-# (0.000) SELECT 1 AS "a" FROM "blog_tag" INNER JOIN "blog_post_tags" ON ("blog_tag"."id" = "blog_post_tags"."tag_id") WHERE "blog_post_tags"."post_id" = 8 LIMIT 1; args=(1, 8); alias=default
-# (0.000) SELECT 1 AS "a" FROM "blog_tag" INNER JOIN "blog_post_tags" ON ("blog_tag"."id" = "blog_post_tags"."tag_id") WHERE "blog_post_tags"."post_id" = 7 LIMIT 1; args=(1, 7); alias=default
-# (0.000) SELECT 1 AS "a" FROM "blog_tag" INNER JOIN "blog_post_tags" ON ("blog_tag"."id" = "blog_post_tags"."tag_id") WHERE "blog_post_tags"."post_id" = 6 LIMIT 1; args=(1, 6); alias=default
 
 # Create your views here.
 
@@ -48,10 +45,14 @@ class PostCreate(LoginRequiredMixin, CreateView):
     model = Post
     fields = ['title', 'content', 'hook_text', 'thumbnail', 'file', 'category']
 
+    # 최고 관리자거나 관리자가 아니면 현재 페이지에 접근할 수 없다
+    def test_func(self):
+        return self.request.user.is_superuser or self.request.user.is_staff
+
     # 사용자가 form에 제대로 된 정보를 담으면 실행되는 함수
     def form_valid(self, form):
         current_user = self.request.user
-        if current_user.is_authenticated:
+        if current_user.is_authenticated and (current_user.is_superuser or current_user.is_staff):
             form.instance.author = current_user
             return super(PostCreate, self).form_valid(form)
         else:
