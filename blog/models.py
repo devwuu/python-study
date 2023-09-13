@@ -45,4 +45,6 @@ class Post(models.Model):
     def get_file_name(self):
         return os.path.basename(self.file.name)
 
-
+    # 이 함수를 정의해두면 form_validation 함수 실행 후 자동으로 상세 페이지로 넘어가게 된다
+    def get_absolute_url(self):
+        return f'/blog/{self.pk}/'

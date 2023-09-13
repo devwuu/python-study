@@ -126,3 +126,22 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, '_media') # 미디어를 저장할 ROOT 폴더
+
+# logger
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+      'console': {
+          'level': 'DEBUG',
+          'class': 'logging.StreamHandler'
+      }
+    },
+    'loggers': {
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level':  'DEBUG'
+        }
+    }
+
+}
