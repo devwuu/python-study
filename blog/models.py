@@ -21,8 +21,7 @@ class Tag(models.Model):
 
 
 class Post(models.Model):
-    thumbnail = models.ImageField(upload_to='blog/images/%Y/%m/%d/',
-                                  blank=True)  # MEDIA_ROOT의 하위 폴더로 'blog/images/%Y/%m/%d/' 디렉토리를 생성하고 파일을 저장한다
+    thumbnail = models.ImageField(upload_to='blog/images/%Y/%m/%d/', blank=True)  # MEDIA_ROOT의 하위 폴더로 'blog/images/%Y/%m/%d/' 디렉토리를 생성하고 파일을 저장한다
     file = models.FileField(upload_to='blog/files/%Y/%m/%d/', blank=True)
     title = models.CharField(max_length=30)
     content = models.TextField()
