@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 from .models import Post, Category, Tag
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.core.exceptions import PermissionDenied
+
 
 # 현재 쿼리 최적화를 하지 않고 자동 발생하는 쿼리에 의존해서 데이터를 가져오다보니
 # 관계가 있는 모델의 경우 아이디별로 쿼리가 발생하는 현상이 발생
@@ -38,10 +40,10 @@ class PostDetail(DetailView):
         return context
 
 
-class PostCreate(LoginRequiredMixin, CreateView):
+class PostCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     # 로그인한 유저에게만 해당 페이지가 보여지게 된다
     # form이라는 이름의 table 형태로 form을 제공한다
-    template_name = 'form.html'
+    template_name = 'create-form.html'
     model = Post
     fields = ['title', 'content', 'hook_text', 'thumbnail', 'file', 'category']
 
@@ -57,6 +59,19 @@ class PostCreate(LoginRequiredMixin, CreateView):
             return super(PostCreate, self).form_valid(form)
         else:
             redirect('/blog/')
+
+
+class PostUpdate(LoginRequiredMixin, UpdateView):
+    template_name = 'update-form.html'
+    model = Post
+    fields = ['title', 'content', 'hook_text', 'thumbnail', 'file', 'category']
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.user == self.get_object().author:
+            # self.get_object()는 Post.objects.get(pk=pk)와 동일하다. 현재 View에서 보여주는 Object를 가져오는 것이기 때문에
+            return super(PostUpdate, self).dispatch(request, *args, **kwargs)
+        else:
+            raise PermissionDenied
 
 
 # FBV(Function Base View)

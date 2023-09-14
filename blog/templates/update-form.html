@@ -1,0 +1,27 @@
+{% extends 'common/base.html' %}
+{% block title_container %} Edit Post - Blog {% endblock %}
+{% block main_container %}
+    <div class="container">
+        <div class="row">
+            <!-- Post Content Column -->
+            <div class="col-lg-8">
+                <h1>Edit Post</h1>
+                <hr/>
+                <form method="post" enctype="multipart/form-data"> {% csrf_token %} <!-- csrf 공격을 막기 위해 장고에서 제공해주는 기능 장고에서 form 사용시 꼭 사용! -->
+                    <table>
+                        {{ form }}
+                    </table>
+                    <button type="submit" class="button btn-primary float-right m-5">Submit</button>
+                </form>
+            </div>
+            <!-- Sidebar Widgets Column -->
+            <div class="col-md-4">
+
+                <!-- Search Widget -->
+                {% include 'common/search_widget.html' %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
