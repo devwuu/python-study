@@ -1,0 +1,115 @@
+{% extends 'common/base.html' %}
+
+{% block title_container %} Blog {% endblock %}
+{% block main_header %} <h1> Blog {% if category %}<span class="badge badge-secondary" id="category-name">{{ category.name }}</span>{% endif %}</h1> {% endblock %}
+
+<!-- Modal -->
+{% block modal_container %}
+  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="logInModalLabel"
+       aria-hidden="true">
+      <div class="modal-dialog" role="document">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h5 class="modal-title" id="loginModalLabel"> <i class="fas fa-sign-in-alt"></i>&nbsp Log In</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body">
+                  <div class="row">
+                      <div class="col-md-6">
+                          <button type="button" class="btn btn-outline-dark btn-block btn-sm "><i class="fab fa-google"></i>&nbsp&nbsp Log in with Google</button>
+                          <button type="button" class="btn btn-outline-dark btn-block btn-sm "><i class="far fa-envelope"></i>&nbsp&nbsp Log in with E-mail</button>
+                      </div>
+                      <div class="col-md-6">
+                          <button type="button" class="btn btn-outline-dark btn-block btn-sm"><i class="far fa-envelope"></i>&nbsp&nbsp Sign Up with E-mail</button>
+                      </div>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+          </div>
+      </div>
+  </div>
+{% endblock %}
+
+{% block main_container %}
+
+  <div class="container my-3">
+
+      <div class="row">
+
+          <div class="col-md-8 col-lg-9" id="main-area">
+
+              {% if user.is_authenticated %}
+                  {% if user.is_staff or user.is_superuser %}
+                      <a class="btn btn-info btn-sm float-right" href="/blog/create-post">New Post</a>
+                  {% endif %}
+              {% endif %}
+
+              <h1>Blog</h1>
+
+              {% if post_list.exists %}
+                  {% for p in post_list %}
+                      <!-- Blog Post -->
+                      <div class="card mb-4">
+                      {% if p.thumbnail %}
+                          <img class="card-img-top" src="{{ p.thumbnail.url }}" alt="thumbnail">
+                      {% endif %}
+                          <div class="card-body">
+                              {% if p.category %}
+                                <span class="badge badge-secondary float-right"> {{ p.category }} </span>
+                              {% else %}
+                                <span class="badge badge-secondary float-right"> None </span>
+                              {% endif %}
+                              <h2 class="card-title">{{ p.title }}</h2>
+                              {% if p.hook_text %}
+                                  <h5 class="text-muted"> {{ p.hook_text }} </h5>
+                              {% endif %}
+
+                              <p class="card-text">{{ p.content | truncatewords:45}}</p>
+                              {% if p.tags.exists %}
+                                  {% for tag in p.tags.iterator %}
+                                      <a href="/blog/tags/{{ tag.slug }}/"><span class="badge badge-pill badge-light mb-4"> {{ tag.name }} </span></a>
+                                  {% endfor %}
+                                  <br/>
+                              {% endif %}
+
+                              <a href="/blog/{{ p.pk }}" class="btn btn-primary">Read More &rarr;</a>
+                          </div>
+                          <div class="card-footer text-muted">
+                              Posted on {{ p.created_at}} by
+                              <a href="#">{{ p.author | upper }}</a>
+                          </div>
+                      </div>
+                  {% endfor %}
+              {% else %}
+                  <h1> 게시글이 없습니다 </h1>
+              {% endif %}
+
+
+              <!-- Pagination -->
+              <ul class="pagination justify-content-center mb-4">
+                  <li class="page-item">
+                      <a class="page-link" href="#">&larr; Older</a>
+                  </li>
+                  <li class="page-item disabled">
+                      <a class="page-link" href="#">Newer &rarr;</a>
+                  </li>
+              </ul>
+
+          </div>
+
+          <div class="col-md-4 col-lg-3">
+              <!-- Search Widget -->
+              {% include 'common/search_widget.html' %}
+
+              <!-- Categories Widget -->
+              {% include 'common/category.html' %}
+          </div>
+      </div>
+  </div>
+{% endblock %}
+
+
